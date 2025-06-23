@@ -74,7 +74,7 @@ namespace FPBlackjack
             labelPlayerScore.Size = new Size(117, 16);
             labelPlayerScore.TabIndex = 2;
             labelPlayerScore.Text = "Player Score:";
-            labelPlayerScore.Click += labelPlayerScore_Click;
+      
             // 
             // labelOpponentScore
             // 

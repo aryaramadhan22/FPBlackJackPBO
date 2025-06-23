@@ -12,17 +12,53 @@ namespace FPBlackjack
 
     public class OpponentPlayer : Player
     {
-        public void PlayTurn(Deck deck)
-        {
-            while (CalculateScore(Hand) < 17)
-            {
-                Card card = deck.DrawCard();
-                if (card == null) break;
-                Hand.Add(card);
+        private Random rng = new Random();
 
-                int score = CalculateScore(Hand);
-                if (score >= 21)
+        public void PlayTurn(Deck deck, int playerScore)
+        {
+            while (true)
+            {
+                int opponentScore = CalculateScore(Hand);
+
+                // Player bust? Stand
+                if (playerScore > 21) break;
+                // Sudah 21 atau bust? Stand
+                if (opponentScore >= 21) break;
+                // Jika score 19 atau lebih, selalu stand! (Tidak pernah hit lagi)
+                if (opponentScore >= 19) break;
+
+                // Jika sudah menang/draw cukup dengan stand (defensive)
+                if (opponentScore >= 17 && opponentScore >= playerScore && playerScore <= 21)
+                {
                     break;
+                }
+
+                // Jika 17/18, dan player stand lebih tinggi, ada sedikit chance hit (AI berani dikit)
+                if (opponentScore >= 17 && opponentScore < 19 && opponentScore < playerScore && playerScore <= 21)
+                {
+                    // 15% chance nekat hit
+                    if (rng.Next(100) < 15)
+                    {
+                        Card card = deck.DrawCard();
+                        if (card == null) break;
+                        Hand.Add(card);
+                        continue;
+                    }
+                    // Default: stand saja
+                    break;
+                }
+
+                // Kalau <17, selalu hit!
+                if (opponentScore < 17)
+                {
+                    Card card = deck.DrawCard();
+                    if (card == null) break;
+                    Hand.Add(card);
+                    continue;
+                }
+
+                // Default: stand saja
+                break;
             }
         }
 
@@ -47,6 +83,4 @@ namespace FPBlackjack
             return total;
         }
     }
-
-
 }
