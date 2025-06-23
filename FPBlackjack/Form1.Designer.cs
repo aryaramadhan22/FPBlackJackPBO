@@ -31,11 +31,11 @@ namespace FPBlackjack
         {
             this.components = new System.ComponentModel.Container();
             this.panelPlayerCards = new System.Windows.Forms.Panel();
-            this.panelAICards = new System.Windows.Forms.Panel();
+            this.panelOpponentCards = new System.Windows.Forms.Panel();
             this.labelPlayerScore = new System.Windows.Forms.Label();
-            this.labelAIScore = new System.Windows.Forms.Label();
+            this.labelOpponentScore = new System.Windows.Forms.Label();
             this.labelPlayerHP = new System.Windows.Forms.Label();
-            this.labelAIHP = new System.Windows.Forms.Label();
+            this.labelOpponentHP = new System.Windows.Forms.Label();
             this.buttonHit = new System.Windows.Forms.Button();
             this.buttonStand = new System.Windows.Forms.Button();
             this.buttonSkill = new System.Windows.Forms.Button();
@@ -50,11 +50,11 @@ namespace FPBlackjack
             this.panelPlayerCards.Size = new System.Drawing.Size(600, 100);
             this.panelPlayerCards.TabIndex = 0;
 
-            // panelAICards
-            this.panelAICards.Location = new System.Drawing.Point(50, 50);
-            this.panelAICards.Name = "panelAICards";
-            this.panelAICards.Size = new System.Drawing.Size(600, 100);
-            this.panelAICards.TabIndex = 1;
+            // panelOpponentCards
+            this.panelOpponentCards.Location = new System.Drawing.Point(50, 50);
+            this.panelOpponentCards.Name = "panelOpponentCards";
+            this.panelOpponentCards.Size = new System.Drawing.Size(600, 100);
+            this.panelOpponentCards.TabIndex = 1;
 
             // labelPlayerScore
             this.labelPlayerScore.AutoSize = true;
@@ -64,13 +64,13 @@ namespace FPBlackjack
             this.labelPlayerScore.TabIndex = 2;
             this.labelPlayerScore.Text = "Player Score:";
 
-            // labelAIScore
-            this.labelAIScore.AutoSize = true;
-            this.labelAIScore.Location = new System.Drawing.Point(50, 20);
-            this.labelAIScore.Name = "labelAIScore";
-            this.labelAIScore.Size = new System.Drawing.Size(60, 15);
-            this.labelAIScore.TabIndex = 3;
-            this.labelAIScore.Text = "AI Score:";
+            // labelOpponentScore
+            this.labelOpponentScore.AutoSize = true;
+            this.labelOpponentScore.Location = new System.Drawing.Point(50, 20);
+            this.labelOpponentScore.Name = "labelOpponentScore";
+            this.labelOpponentScore.Size = new System.Drawing.Size(97, 15);
+            this.labelOpponentScore.TabIndex = 3;
+            this.labelOpponentScore.Text = "Opponent Score:";
 
             // labelPlayerHP
             this.labelPlayerHP.AutoSize = true;
@@ -80,13 +80,13 @@ namespace FPBlackjack
             this.labelPlayerHP.TabIndex = 4;
             this.labelPlayerHP.Text = "Player HP:";
 
-            // labelAIHP
-            this.labelAIHP.AutoSize = true;
-            this.labelAIHP.Location = new System.Drawing.Point(500, 20);
-            this.labelAIHP.Name = "labelAIHP";
-            this.labelAIHP.Size = new System.Drawing.Size(50, 15);
-            this.labelAIHP.TabIndex = 5;
-            this.labelAIHP.Text = "AI HP:";
+            // labelOpponentHP
+            this.labelOpponentHP.AutoSize = true;
+            this.labelOpponentHP.Location = new System.Drawing.Point(500, 20);
+            this.labelOpponentHP.Name = "labelOpponentHP";
+            this.labelOpponentHP.Size = new System.Drawing.Size(81, 15);
+            this.labelOpponentHP.TabIndex = 5;
+            this.labelOpponentHP.Text = "Opponent HP:";
 
             // buttonHit
             this.buttonHit.Location = new System.Drawing.Point(50, 420);
@@ -145,11 +145,11 @@ namespace FPBlackjack
             this.Controls.Add(this.buttonSkill);
             this.Controls.Add(this.buttonStand);
             this.Controls.Add(this.buttonHit);
-            this.Controls.Add(this.labelAIHP);
+            this.Controls.Add(this.labelOpponentHP);
             this.Controls.Add(this.labelPlayerHP);
-            this.Controls.Add(this.labelAIScore);
+            this.Controls.Add(this.labelOpponentScore);
             this.Controls.Add(this.labelPlayerScore);
-            this.Controls.Add(this.panelAICards);
+            this.Controls.Add(this.panelOpponentCards);
             this.Controls.Add(this.panelPlayerCards);
             this.Name = "Form1";
             this.Text = "Blackjack Battle";
@@ -160,11 +160,11 @@ namespace FPBlackjack
         #endregion
 
         private System.Windows.Forms.Panel panelPlayerCards;
-        private System.Windows.Forms.Panel panelAICards;
+        private System.Windows.Forms.Panel panelOpponentCards;
         private System.Windows.Forms.Label labelPlayerScore;
-        private System.Windows.Forms.Label labelAIScore;
+        private System.Windows.Forms.Label labelOpponentScore;
         private System.Windows.Forms.Label labelPlayerHP;
-        private System.Windows.Forms.Label labelAIHP;
+        private System.Windows.Forms.Label labelOpponentHP;
         private System.Windows.Forms.Button buttonHit;
         private System.Windows.Forms.Button buttonStand;
         private System.Windows.Forms.Button buttonSkill;

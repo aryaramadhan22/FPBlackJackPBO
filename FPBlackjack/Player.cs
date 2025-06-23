@@ -10,7 +10,7 @@ namespace FPBlackjack
 
     public class HumanPlayer : Player { }
 
-    public class AIPlayer : Player
+    public class OpponentPlayer : Player
     {
         public void PlayTurn(Deck deck)
         {

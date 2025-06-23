@@ -9,11 +9,11 @@ namespace FPBlackjack
     {
         private Deck deck;
         private HumanPlayer human;
-        private AIPlayer ai;
+        private OpponentPlayer opponent;
         private IScoreEvaluator evaluator = new BlackjackScoreEvaluator();
 
         private int playerHP = 100;
-        private int aiHP = 100;
+        private int opponentHP = 100;
         private int skillGauge = 0;
         private int maxGauge = 40;
         private bool isSkillActive = false;
@@ -31,15 +31,15 @@ namespace FPBlackjack
             deck.Shuffle();
 
             human = new HumanPlayer { Name = "Player" };
-            ai = new AIPlayer { Name = "AI" };
+            opponent = new OpponentPlayer { Name = "Opponent" };
 
             playerHP = 100;
-            aiHP = 100;
+            opponentHP = 100;
             skillGauge = 0;
             isSkillActive = false;
 
             human.Hand.Clear();
-            ai.Hand.Clear();
+            opponent.Hand.Clear();
 
             UpdateUI();
 
@@ -50,13 +50,13 @@ namespace FPBlackjack
         private void UpdateUI()
         {
             labelPlayerScore.Text = $"Player Score: {evaluator.CalculateScore(human.Hand)}";
-            labelAIScore.Text = $"AI Score: {evaluator.CalculateScore(ai.Hand)}";
+            labelOpponentScore.Text = $"Opponent Score: {evaluator.CalculateScore(opponent.Hand)}";
             labelPlayerHP.Text = $"Player HP: {playerHP}";
-            labelAIHP.Text = $"AI HP: {aiHP}";
+            labelOpponentHP.Text = $"Opponent HP: {opponentHP}";
             progressBarSkill.Value = skillGauge;
 
             panelPlayerCards.Controls.Clear();
-            panelAICards.Controls.Clear();
+            panelOpponentCards.Controls.Clear();
 
             int x = 0;
             foreach (Card card in human.Hand)
@@ -68,11 +68,11 @@ namespace FPBlackjack
             }
 
             x = 0;
-            foreach (Card card in ai.Hand)
+            foreach (Card card in opponent.Hand)
             {
                 PictureBox pic = CreateCardImage(card);
                 pic.Location = new Point(x, 0);
-                panelAICards.Controls.Add(pic);
+                panelOpponentCards.Controls.Add(pic);
                 x += 65;
             }
         }
@@ -143,18 +143,18 @@ namespace FPBlackjack
 
             int playerScore = evaluator.CalculateScore(human.Hand);
 
-            // === AI HIT Sekali ===
+            // === Opponent HIT Sekali ===
             if (deck.IsEmpty()) deck.Refill();
-            ai.Hand.Add(deck.DrawCard());
+            opponent.Hand.Add(deck.DrawCard());
 
-            int aiScore = evaluator.CalculateScore(ai.Hand);
+            int opponentScore = evaluator.CalculateScore(opponent.Hand);
 
             UpdateUI();
 
             if (playerScore > 21)
             {
-                playerHP -= aiScore;
-                labelRoundStatus.Text = $"Kamu bust! AI menang ronde ini.";
+                playerHP -= opponentScore;
+                labelRoundStatus.Text = $"Kamu bust! Opponent menang ronde ini.";
                 labelRoundStatus.Visible = true;
 
                 buttonHit.Enabled = false;
@@ -165,10 +165,10 @@ namespace FPBlackjack
                 return;
             }
 
-            if (aiScore > 21)
+            if (opponentScore > 21)
             {
-                aiHP -= playerScore;
-                labelRoundStatus.Text = $"AI bust! Kamu serang AI sebesar {playerScore}!";
+                opponentHP -= playerScore;
+                labelRoundStatus.Text = $"Opponent bust! Kamu serang Opponent sebesar {playerScore}!";
                 labelRoundStatus.Visible = true;
 
                 buttonHit.Enabled = false;
@@ -184,19 +184,19 @@ namespace FPBlackjack
         private void buttonStand_Click(object sender, EventArgs e)
         {
             int playerScore = evaluator.CalculateScore(human.Hand);
-            int aiScore = evaluator.CalculateScore(ai.Hand);
+            int opponentScore = evaluator.CalculateScore(opponent.Hand);
 
             string result;
 
-            if (playerScore > aiScore && playerScore <= 21 || aiScore > 21)
+            if (playerScore > opponentScore && playerScore <= 21 || opponentScore > 21)
             {
-                aiHP -= playerScore;
-                result = $"You win the round! AI kehilangan {playerScore} HP!";
+                opponentHP -= playerScore;
+                result = $"You win the round! Opponent kehilangan {playerScore} HP!";
             }
-            else if (aiScore > playerScore && aiScore <= 21 || playerScore > 21)
+            else if (opponentScore > playerScore && opponentScore <= 21 || playerScore > 21)
             {
-                playerHP -= aiScore;
-                result = $"AI win the round! Kamu kehilangan {aiScore} HP!";
+                playerHP -= opponentScore;
+                result = $"Opponent win the round! Kamu kehilangan {opponentScore} HP!";
             }
             else
             {
@@ -230,9 +230,9 @@ namespace FPBlackjack
                 StartGame();
                 return;
             }
-            else if (aiHP <= 0)
+            else if (opponentHP <= 0)
             {
-                MessageBox.Show("You Win! AI KO.");
+                MessageBox.Show("You Win! Opponent KO.");
                 StartGame();
                 return;
             }
@@ -243,7 +243,7 @@ namespace FPBlackjack
         private void NextRound()
         {
             human.Hand.Clear();
-            ai.Hand.Clear();
+            opponent.Hand.Clear();
             if (deck.IsEmpty()) deck.Refill();
             UpdateUI();
 
