@@ -15,8 +15,9 @@ namespace FPBlackjack
         private int playerHP = 100;
         private int opponentHP = 100;
         private int skillGauge = 0;
-        private int maxGauge = 40;
-        private bool isSkillActive = false;
+        private const int maxGauge = 50;
+        private bool isSkillPreventBustActive = false;
+        private bool isSkillDoubleDamageActive = false;
 
         public Form1()
         {
@@ -36,7 +37,8 @@ namespace FPBlackjack
             playerHP = 100;
             opponentHP = 100;
             skillGauge = 0;
-            isSkillActive = false;
+            isSkillPreventBustActive = false;
+            isSkillDoubleDamageActive = false;
 
             human.Hand.Clear();
             opponent.Hand.Clear();
@@ -75,6 +77,10 @@ namespace FPBlackjack
                 panelOpponentCards.Controls.Add(pic);
                 x += 65;
             }
+
+            bool canActivateSkill = skillGauge >= maxGauge && !isSkillPreventBustActive && !isSkillDoubleDamageActive;
+            buttonSkillPreventBust.Enabled = canActivateSkill;
+            buttonSkillDoubleDamage.Enabled = canActivateSkill;
         }
 
         private PictureBox CreateCardImage(Card card)
@@ -108,7 +114,7 @@ namespace FPBlackjack
             int currentScore = evaluator.CalculateScore(human.Hand);
             Card drawnCard = null;
 
-            if (isSkillActive)
+            if (isSkillPreventBustActive)
             {
                 int maxValue = 21 - currentScore;
                 int attempts = 0;
@@ -127,7 +133,7 @@ namespace FPBlackjack
 
                 } while (attempts < 30);
 
-                isSkillActive = false;
+                isSkillPreventBustActive = false;
             }
             else
             {
@@ -139,11 +145,12 @@ namespace FPBlackjack
             human.Hand.Add(drawnCard);
             skillGauge += drawnCard.Value;
             if (skillGauge > maxGauge) skillGauge = maxGauge;
-            buttonSkill.Enabled = skillGauge >= maxGauge;
+
+            UpdateUI();
 
             int playerScore = evaluator.CalculateScore(human.Hand);
 
-            // === Opponent HIT Sekali ===
+            // Opponent HIT Sekali
             if (deck.IsEmpty()) deck.Refill();
             opponent.Hand.Add(deck.DrawCard());
 
@@ -159,7 +166,8 @@ namespace FPBlackjack
 
                 buttonHit.Enabled = false;
                 buttonStand.Enabled = false;
-                buttonSkill.Enabled = false;
+                buttonSkillPreventBust.Enabled = false;
+                buttonSkillDoubleDamage.Enabled = false;
 
                 roundTransitionTimer.Start();
                 return;
@@ -167,19 +175,25 @@ namespace FPBlackjack
 
             if (opponentScore > 21)
             {
-                opponentHP -= playerScore;
-                labelRoundStatus.Text = $"Opponent bust! Kamu serang Opponent sebesar {playerScore}!";
+                int damage = playerScore;
+                if (isSkillDoubleDamageActive)
+                {
+                    damage *= 2;
+                    isSkillDoubleDamageActive = false;
+                }
+                opponentHP -= damage;
+                labelRoundStatus.Text = $"Opponent bust! Kamu serang Opponent sebesar {damage}!";
                 labelRoundStatus.Visible = true;
 
                 buttonHit.Enabled = false;
                 buttonStand.Enabled = false;
-                buttonSkill.Enabled = false;
+                buttonSkillPreventBust.Enabled = false;
+                buttonSkillDoubleDamage.Enabled = false;
 
                 roundTransitionTimer.Start();
                 return;
             }
         }
-
 
         private void buttonStand_Click(object sender, EventArgs e)
         {
@@ -187,11 +201,16 @@ namespace FPBlackjack
             int opponentScore = evaluator.CalculateScore(opponent.Hand);
 
             string result;
-
             if (playerScore > opponentScore && playerScore <= 21 || opponentScore > 21)
             {
-                opponentHP -= playerScore;
-                result = $"You win the round! Opponent kehilangan {playerScore} HP!";
+                int damage = playerScore;
+                if (isSkillDoubleDamageActive)
+                {
+                    damage *= 2;
+                    isSkillDoubleDamageActive = false;
+                }
+                opponentHP -= damage;
+                result = $"You win the round! Opponent kehilangan {damage} HP!";
             }
             else if (opponentScore > playerScore && opponentScore <= 21 || playerScore > 21)
             {
@@ -208,14 +227,25 @@ namespace FPBlackjack
             roundTransitionTimer.Start();
         }
 
-        private void buttonSkill_Click(object sender, EventArgs e)
+        private void buttonSkillPreventBust_Click(object sender, EventArgs e)
         {
-            if (skillGauge >= maxGauge)
+            if (skillGauge >= maxGauge && !isSkillDoubleDamageActive)
             {
-                isSkillActive = true;
+                isSkillPreventBustActive = true;
                 skillGauge = 0;
-                buttonSkill.Enabled = false;
                 UpdateUI();
+                MessageBox.Show("Skill Prevent Bust aktif! Hit berikutnya dijamin tidak bust.");
+            }
+        }
+
+        private void buttonSkillDoubleDamage_Click(object sender, EventArgs e)
+        {
+            if (skillGauge >= maxGauge && !isSkillPreventBustActive)
+            {
+                isSkillDoubleDamageActive = true;
+                skillGauge = 0;
+                UpdateUI();
+                MessageBox.Show("Skill Double Damage aktif! Jika kamu menang ronde ini, damage ke lawan x2.");
             }
         }
 
@@ -245,11 +275,15 @@ namespace FPBlackjack
             human.Hand.Clear();
             opponent.Hand.Clear();
             if (deck.IsEmpty()) deck.Refill();
+
+            isSkillPreventBustActive = false;
+            isSkillDoubleDamageActive = false;
+
             UpdateUI();
 
             buttonHit.Enabled = true;
             buttonStand.Enabled = true;
-            buttonSkill.Enabled = skillGauge >= maxGauge;
         }
     }
 }
+

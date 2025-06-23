@@ -16,7 +16,13 @@ namespace FPBlackjack
         {
             while (CalculateScore(Hand) < 17)
             {
-                Hand.Add(deck.DrawCard());
+                Card card = deck.DrawCard();
+                if (card == null) break;
+                Hand.Add(card);
+
+                int score = CalculateScore(Hand);
+                if (score >= 21)
+                    break;
             }
         }
 
@@ -41,4 +47,6 @@ namespace FPBlackjack
             return total;
         }
     }
+
+
 }

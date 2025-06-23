@@ -38,7 +38,8 @@ namespace FPBlackjack
             this.labelOpponentHP = new System.Windows.Forms.Label();
             this.buttonHit = new System.Windows.Forms.Button();
             this.buttonStand = new System.Windows.Forms.Button();
-            this.buttonSkill = new System.Windows.Forms.Button();
+            this.buttonSkillPreventBust = new System.Windows.Forms.Button();
+            this.buttonSkillDoubleDamage = new System.Windows.Forms.Button();
             this.progressBarSkill = new System.Windows.Forms.ProgressBar();
             this.labelRoundStatus = new System.Windows.Forms.Label();
             this.roundTransitionTimer = new System.Windows.Forms.Timer(this.components);
@@ -106,21 +107,32 @@ namespace FPBlackjack
             this.buttonStand.UseVisualStyleBackColor = true;
             this.buttonStand.Click += new System.EventHandler(this.buttonStand_Click);
 
-            // buttonSkill
-            this.buttonSkill.Location = new System.Drawing.Point(230, 420);
-            this.buttonSkill.Name = "buttonSkill";
-            this.buttonSkill.Size = new System.Drawing.Size(75, 30);
-            this.buttonSkill.TabIndex = 8;
-            this.buttonSkill.Text = "Skill";
-            this.buttonSkill.UseVisualStyleBackColor = true;
-            this.buttonSkill.Click += new System.EventHandler(this.buttonSkill_Click);
+            // buttonSkillPreventBust
+            this.buttonSkillPreventBust.Location = new System.Drawing.Point(230, 420);
+            this.buttonSkillPreventBust.Name = "buttonSkillPreventBust";
+            this.buttonSkillPreventBust.Size = new System.Drawing.Size(120, 30);
+            this.buttonSkillPreventBust.TabIndex = 8;
+            this.buttonSkillPreventBust.Text = "Prevent Bust";
+            this.buttonSkillPreventBust.Enabled = false;
+            this.buttonSkillPreventBust.UseVisualStyleBackColor = true;
+            this.buttonSkillPreventBust.Click += new System.EventHandler(this.buttonSkillPreventBust_Click);
+
+            // buttonSkillDoubleDamage
+            this.buttonSkillDoubleDamage.Location = new System.Drawing.Point(370, 420);
+            this.buttonSkillDoubleDamage.Name = "buttonSkillDoubleDamage";
+            this.buttonSkillDoubleDamage.Size = new System.Drawing.Size(130, 30);
+            this.buttonSkillDoubleDamage.TabIndex = 9;
+            this.buttonSkillDoubleDamage.Text = "Double Damage";
+            this.buttonSkillDoubleDamage.Enabled = false;
+            this.buttonSkillDoubleDamage.UseVisualStyleBackColor = true;
+            this.buttonSkillDoubleDamage.Click += new System.EventHandler(this.buttonSkillDoubleDamage_Click);
 
             // progressBarSkill
-            this.progressBarSkill.Location = new System.Drawing.Point(320, 420);
-            this.progressBarSkill.Maximum = 40;
+            this.progressBarSkill.Location = new System.Drawing.Point(520, 420);
+            this.progressBarSkill.Maximum = 50;
             this.progressBarSkill.Name = "progressBarSkill";
             this.progressBarSkill.Size = new System.Drawing.Size(150, 30);
-            this.progressBarSkill.TabIndex = 9;
+            this.progressBarSkill.TabIndex = 10;
 
             // labelRoundStatus
             this.labelRoundStatus.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -128,7 +140,7 @@ namespace FPBlackjack
             this.labelRoundStatus.Location = new System.Drawing.Point(50, 200);
             this.labelRoundStatus.Name = "labelRoundStatus";
             this.labelRoundStatus.Size = new System.Drawing.Size(600, 40);
-            this.labelRoundStatus.TabIndex = 10;
+            this.labelRoundStatus.TabIndex = 11;
             this.labelRoundStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.labelRoundStatus.Text = "";
             this.labelRoundStatus.Visible = false;
@@ -142,7 +154,8 @@ namespace FPBlackjack
             this.ClientSize = new System.Drawing.Size(700, 480);
             this.Controls.Add(this.labelRoundStatus);
             this.Controls.Add(this.progressBarSkill);
-            this.Controls.Add(this.buttonSkill);
+            this.Controls.Add(this.buttonSkillPreventBust);
+            this.Controls.Add(this.buttonSkillDoubleDamage);
             this.Controls.Add(this.buttonStand);
             this.Controls.Add(this.buttonHit);
             this.Controls.Add(this.labelOpponentHP);
@@ -167,7 +180,8 @@ namespace FPBlackjack
         private System.Windows.Forms.Label labelOpponentHP;
         private System.Windows.Forms.Button buttonHit;
         private System.Windows.Forms.Button buttonStand;
-        private System.Windows.Forms.Button buttonSkill;
+        private System.Windows.Forms.Button buttonSkillPreventBust;
+        private System.Windows.Forms.Button buttonSkillDoubleDamage;
         private System.Windows.Forms.ProgressBar progressBarSkill;
         private System.Windows.Forms.Label labelRoundStatus;
         private System.Windows.Forms.Timer roundTransitionTimer;
