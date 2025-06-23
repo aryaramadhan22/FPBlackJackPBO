@@ -109,6 +109,8 @@ namespace FPBlackjack
 
         private void buttonHit_Click(object sender, EventArgs e)
         {
+            labelRoundStatus.Visible = false;
+
             if (deck.IsEmpty()) deck.Refill();
 
             int currentScore = evaluator.CalculateScore(human.Hand);
@@ -134,6 +136,9 @@ namespace FPBlackjack
                 } while (attempts < 30);
 
                 isSkillPreventBustActive = false;
+                labelRoundStatus.Text = "Skill Prevent Bust aktif! Hit berikutnya dijamin tidak bust.";
+                labelRoundStatus.ForeColor = Color.Blue;
+                labelRoundStatus.Visible = true;
             }
             else
             {
@@ -150,7 +155,7 @@ namespace FPBlackjack
 
             int playerScore = evaluator.CalculateScore(human.Hand);
 
-            // Opponent HIT Sekali
+            // Opponent HIT sekali (jika memang perlu)
             if (deck.IsEmpty()) deck.Refill();
             opponent.Hand.Add(deck.DrawCard());
 
@@ -162,6 +167,7 @@ namespace FPBlackjack
             {
                 playerHP -= opponentScore;
                 labelRoundStatus.Text = $"Kamu bust! Opponent menang ronde ini.";
+                labelRoundStatus.ForeColor = Color.DarkRed;
                 labelRoundStatus.Visible = true;
 
                 buttonHit.Enabled = false;
@@ -183,6 +189,7 @@ namespace FPBlackjack
                 }
                 opponentHP -= damage;
                 labelRoundStatus.Text = $"Opponent bust! Kamu serang Opponent sebesar {damage}!";
+                labelRoundStatus.ForeColor = Color.DarkRed;
                 labelRoundStatus.Visible = true;
 
                 buttonHit.Enabled = false;
@@ -197,6 +204,22 @@ namespace FPBlackjack
 
         private void buttonStand_Click(object sender, EventArgs e)
         {
+            // Logic Opponent: Hit hingga 17-21, Stand jika >= 17, berhenti jika dapat 21
+            while (true)
+            {
+                int score = evaluator.CalculateScore(opponent.Hand);
+                if (score >= 17)
+                    break;
+                Card card = deck.DrawCard();
+                if (card == null) break;
+                opponent.Hand.Add(card);
+                score = evaluator.CalculateScore(opponent.Hand);
+                if (score >= 21)
+                    break;
+            }
+
+            UpdateUI();
+
             int playerScore = evaluator.CalculateScore(human.Hand);
             int opponentScore = evaluator.CalculateScore(opponent.Hand);
 
@@ -211,15 +234,18 @@ namespace FPBlackjack
                 }
                 opponentHP -= damage;
                 result = $"You win the round! Opponent kehilangan {damage} HP!";
+                labelRoundStatus.ForeColor = Color.DarkGreen;
             }
             else if (opponentScore > playerScore && opponentScore <= 21 || playerScore > 21)
             {
                 playerHP -= opponentScore;
                 result = $"Opponent win the round! Kamu kehilangan {opponentScore} HP!";
+                labelRoundStatus.ForeColor = Color.DarkRed;
             }
             else
             {
                 result = "Draw! Tidak ada damage.";
+                labelRoundStatus.ForeColor = Color.Black;
             }
 
             labelRoundStatus.Text = result;
@@ -234,7 +260,9 @@ namespace FPBlackjack
                 isSkillPreventBustActive = true;
                 skillGauge = 0;
                 UpdateUI();
-                MessageBox.Show("Skill Prevent Bust aktif! Hit berikutnya dijamin tidak bust.");
+                labelRoundStatus.Text = "Skill Prevent Bust aktif! Hit berikutnya dijamin tidak bust.";
+                labelRoundStatus.ForeColor = Color.Blue;
+                labelRoundStatus.Visible = true;
             }
         }
 
@@ -245,29 +273,43 @@ namespace FPBlackjack
                 isSkillDoubleDamageActive = true;
                 skillGauge = 0;
                 UpdateUI();
-                MessageBox.Show("Skill Double Damage aktif! Jika kamu menang ronde ini, damage ke lawan x2.");
+                labelRoundStatus.Text = "Skill Double Damage aktif! Jika kamu menang ronde ini, damage ke lawan x2.";
+                labelRoundStatus.ForeColor = Color.Blue;
+                labelRoundStatus.Visible = true;
             }
         }
 
         private void roundTransitionTimer_Tick(object sender, EventArgs e)
         {
             roundTransitionTimer.Stop();
-            labelRoundStatus.Visible = false;
 
             if (playerHP <= 0)
             {
-                MessageBox.Show("You Lose! HP kamu habis.");
-                StartGame();
+                labelRoundStatus.Text = "You Lose! HP kamu habis.";
+                labelRoundStatus.ForeColor = Color.DarkRed;
+                labelRoundStatus.Visible = true;
+                DisableAllButtons();
+                StartGameAfterDelay();
                 return;
             }
             else if (opponentHP <= 0)
             {
-                MessageBox.Show("You Win! Opponent KO.");
-                StartGame();
+                labelRoundStatus.Text = "You Win! Opponent KO.";
+                labelRoundStatus.ForeColor = Color.DarkGreen;
+                labelRoundStatus.Visible = true;
+                DisableAllButtons();
+                StartGameAfterDelay();
                 return;
             }
 
+            labelRoundStatus.Visible = false;
             NextRound();
+        }
+
+        private async void StartGameAfterDelay()
+        {
+            await System.Threading.Tasks.Task.Delay(2000); // 2 detik delay
+            StartGame();
         }
 
         private void NextRound()
@@ -283,6 +325,14 @@ namespace FPBlackjack
 
             buttonHit.Enabled = true;
             buttonStand.Enabled = true;
+        }
+
+        private void DisableAllButtons()
+        {
+            buttonHit.Enabled = false;
+            buttonStand.Enabled = false;
+            buttonSkillPreventBust.Enabled = false;
+            buttonSkillDoubleDamage.Enabled = false;
         }
     }
 }
