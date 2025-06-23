@@ -22,6 +22,8 @@ namespace FPBlackjack
         public Form1()
         {
             InitializeComponent();
+            this.BackgroundImage = Properties.Resources.BackgroundGame2;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             roundTransitionTimer.Tick += roundTransitionTimer_Tick;
             StartGame();
         }
@@ -333,6 +335,11 @@ namespace FPBlackjack
             buttonStand.Enabled = false;
             buttonSkillPreventBust.Enabled = false;
             buttonSkillDoubleDamage.Enabled = false;
+        }
+
+        private void labelPlayerScore_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

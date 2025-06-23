@@ -29,145 +29,202 @@ namespace FPBlackjack
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.panelPlayerCards = new System.Windows.Forms.Panel();
-            this.panelOpponentCards = new System.Windows.Forms.Panel();
-            this.labelPlayerScore = new System.Windows.Forms.Label();
-            this.labelOpponentScore = new System.Windows.Forms.Label();
-            this.labelPlayerHP = new System.Windows.Forms.Label();
-            this.labelOpponentHP = new System.Windows.Forms.Label();
-            this.buttonHit = new System.Windows.Forms.Button();
-            this.buttonStand = new System.Windows.Forms.Button();
-            this.buttonSkillPreventBust = new System.Windows.Forms.Button();
-            this.buttonSkillDoubleDamage = new System.Windows.Forms.Button();
-            this.progressBarSkill = new System.Windows.Forms.ProgressBar();
-            this.labelRoundStatus = new System.Windows.Forms.Label();
-            this.roundTransitionTimer = new System.Windows.Forms.Timer(this.components);
-            this.SuspendLayout();
-
+            components = new System.ComponentModel.Container();
+            panelPlayerCards = new Panel();
+            panelOpponentCards = new Panel();
+            labelPlayerScore = new Label();
+            labelOpponentScore = new Label();
+            labelPlayerHP = new Label();
+            labelOpponentHP = new Label();
+            buttonHit = new Button();
+            buttonStand = new Button();
+            buttonSkillPreventBust = new Button();
+            buttonSkillDoubleDamage = new Button();
+            progressBarSkill = new ProgressBar();
+            labelRoundStatus = new Label();
+            roundTransitionTimer = new System.Windows.Forms.Timer(components);
+            SuspendLayout();
+            // 
             // panelPlayerCards
-            this.panelPlayerCards.Location = new System.Drawing.Point(50, 300);
-            this.panelPlayerCards.Name = "panelPlayerCards";
-            this.panelPlayerCards.Size = new System.Drawing.Size(600, 100);
-            this.panelPlayerCards.TabIndex = 0;
-
+            // 
+            panelPlayerCards.BackColor = Color.Transparent;
+            panelPlayerCards.Location = new Point(57, 400);
+            panelPlayerCards.Margin = new Padding(3, 4, 3, 4);
+            panelPlayerCards.Name = "panelPlayerCards";
+            panelPlayerCards.Size = new Size(686, 133);
+            panelPlayerCards.TabIndex = 0;
+            // 
             // panelOpponentCards
-            this.panelOpponentCards.Location = new System.Drawing.Point(50, 50);
-            this.panelOpponentCards.Name = "panelOpponentCards";
-            this.panelOpponentCards.Size = new System.Drawing.Size(600, 100);
-            this.panelOpponentCards.TabIndex = 1;
-
+            // 
+            panelOpponentCards.BackColor = Color.Transparent;
+            panelOpponentCards.Location = new Point(57, 67);
+            panelOpponentCards.Margin = new Padding(3, 4, 3, 4);
+            panelOpponentCards.Name = "panelOpponentCards";
+            panelOpponentCards.Size = new Size(686, 133);
+            panelOpponentCards.TabIndex = 1;
+            // 
             // labelPlayerScore
-            this.labelPlayerScore.AutoSize = true;
-            this.labelPlayerScore.Location = new System.Drawing.Point(50, 270);
-            this.labelPlayerScore.Name = "labelPlayerScore";
-            this.labelPlayerScore.Size = new System.Drawing.Size(85, 15);
-            this.labelPlayerScore.TabIndex = 2;
-            this.labelPlayerScore.Text = "Player Score:";
-
+            // 
+            labelPlayerScore.AutoSize = true;
+            labelPlayerScore.BackColor = Color.Transparent;
+            labelPlayerScore.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelPlayerScore.ForeColor = Color.White;
+            labelPlayerScore.Location = new Point(57, 360);
+            labelPlayerScore.Name = "labelPlayerScore";
+            labelPlayerScore.Size = new Size(117, 16);
+            labelPlayerScore.TabIndex = 2;
+            labelPlayerScore.Text = "Player Score:";
+            labelPlayerScore.Click += labelPlayerScore_Click;
+            // 
             // labelOpponentScore
-            this.labelOpponentScore.AutoSize = true;
-            this.labelOpponentScore.Location = new System.Drawing.Point(50, 20);
-            this.labelOpponentScore.Name = "labelOpponentScore";
-            this.labelOpponentScore.Size = new System.Drawing.Size(97, 15);
-            this.labelOpponentScore.TabIndex = 3;
-            this.labelOpponentScore.Text = "Opponent Score:";
-
+            // 
+            labelOpponentScore.AutoSize = true;
+            labelOpponentScore.BackColor = Color.Transparent;
+            labelOpponentScore.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelOpponentScore.ForeColor = Color.White;
+            labelOpponentScore.Location = new Point(57, 27);
+            labelOpponentScore.Name = "labelOpponentScore";
+            labelOpponentScore.Size = new Size(132, 16);
+            labelOpponentScore.TabIndex = 3;
+            labelOpponentScore.Text = "Opponent Score:";
+            // 
             // labelPlayerHP
-            this.labelPlayerHP.AutoSize = true;
-            this.labelPlayerHP.Location = new System.Drawing.Point(500, 270);
-            this.labelPlayerHP.Name = "labelPlayerHP";
-            this.labelPlayerHP.Size = new System.Drawing.Size(65, 15);
-            this.labelPlayerHP.TabIndex = 4;
-            this.labelPlayerHP.Text = "Player HP:";
-
+            // 
+            labelPlayerHP.AutoSize = true;
+            labelPlayerHP.BackColor = Color.Transparent;
+            labelPlayerHP.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelPlayerHP.ForeColor = Color.White;
+            labelPlayerHP.Location = new Point(571, 360);
+            labelPlayerHP.Name = "labelPlayerHP";
+            labelPlayerHP.Size = new Size(90, 16);
+            labelPlayerHP.TabIndex = 4;
+            labelPlayerHP.Text = "Player HP:";
+            // 
             // labelOpponentHP
-            this.labelOpponentHP.AutoSize = true;
-            this.labelOpponentHP.Location = new System.Drawing.Point(500, 20);
-            this.labelOpponentHP.Name = "labelOpponentHP";
-            this.labelOpponentHP.Size = new System.Drawing.Size(81, 15);
-            this.labelOpponentHP.TabIndex = 5;
-            this.labelOpponentHP.Text = "Opponent HP:";
-
+            // 
+            labelOpponentHP.AutoSize = true;
+            labelOpponentHP.BackColor = Color.Transparent;
+            labelOpponentHP.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelOpponentHP.ForeColor = Color.White;
+            labelOpponentHP.Location = new Point(571, 27);
+            labelOpponentHP.Name = "labelOpponentHP";
+            labelOpponentHP.Size = new Size(105, 16);
+            labelOpponentHP.TabIndex = 5;
+            labelOpponentHP.Text = "Opponent HP:";
+            // 
             // buttonHit
-            this.buttonHit.Location = new System.Drawing.Point(50, 420);
-            this.buttonHit.Name = "buttonHit";
-            this.buttonHit.Size = new System.Drawing.Size(75, 30);
-            this.buttonHit.TabIndex = 6;
-            this.buttonHit.Text = "Hit";
-            this.buttonHit.UseVisualStyleBackColor = true;
-            this.buttonHit.Click += new System.EventHandler(this.buttonHit_Click);
-
+            // 
+            buttonHit.BackColor = Color.Transparent;
+            buttonHit.BackgroundImage = Properties.Resources.btn;
+            buttonHit.FlatStyle = FlatStyle.Flat;
+            buttonHit.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonHit.Location = new Point(57, 560);
+            buttonHit.Margin = new Padding(3, 4, 3, 4);
+            buttonHit.Name = "buttonHit";
+            buttonHit.Size = new Size(86, 40);
+            buttonHit.TabIndex = 6;
+            buttonHit.Text = "Hit";
+            buttonHit.UseVisualStyleBackColor = false;
+            buttonHit.Click += buttonHit_Click;
+            // 
             // buttonStand
-            this.buttonStand.Location = new System.Drawing.Point(140, 420);
-            this.buttonStand.Name = "buttonStand";
-            this.buttonStand.Size = new System.Drawing.Size(75, 30);
-            this.buttonStand.TabIndex = 7;
-            this.buttonStand.Text = "Stand";
-            this.buttonStand.UseVisualStyleBackColor = true;
-            this.buttonStand.Click += new System.EventHandler(this.buttonStand_Click);
-
+            // 
+            buttonStand.BackColor = Color.Transparent;
+            buttonStand.BackgroundImage = Properties.Resources.btn;
+            buttonStand.FlatStyle = FlatStyle.Flat;
+            buttonStand.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonStand.Location = new Point(160, 560);
+            buttonStand.Margin = new Padding(3, 4, 3, 4);
+            buttonStand.Name = "buttonStand";
+            buttonStand.Size = new Size(86, 40);
+            buttonStand.TabIndex = 7;
+            buttonStand.Text = "Stand";
+            buttonStand.UseVisualStyleBackColor = false;
+            buttonStand.Click += buttonStand_Click;
+            // 
             // buttonSkillPreventBust
-            this.buttonSkillPreventBust.Location = new System.Drawing.Point(230, 420);
-            this.buttonSkillPreventBust.Name = "buttonSkillPreventBust";
-            this.buttonSkillPreventBust.Size = new System.Drawing.Size(120, 30);
-            this.buttonSkillPreventBust.TabIndex = 8;
-            this.buttonSkillPreventBust.Text = "Prevent Bust";
-            this.buttonSkillPreventBust.Enabled = false;
-            this.buttonSkillPreventBust.UseVisualStyleBackColor = true;
-            this.buttonSkillPreventBust.Click += new System.EventHandler(this.buttonSkillPreventBust_Click);
-
+            // 
+            buttonSkillPreventBust.BackColor = Color.Transparent;
+            buttonSkillPreventBust.BackgroundImage = Properties.Resources.btn;
+            buttonSkillPreventBust.BackgroundImageLayout = ImageLayout.Stretch;
+            buttonSkillPreventBust.Enabled = false;
+            buttonSkillPreventBust.FlatStyle = FlatStyle.Flat;
+            buttonSkillPreventBust.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonSkillPreventBust.ForeColor = SystemColors.ControlText;
+            buttonSkillPreventBust.Location = new Point(263, 560);
+            buttonSkillPreventBust.Margin = new Padding(3, 4, 3, 4);
+            buttonSkillPreventBust.Name = "buttonSkillPreventBust";
+            buttonSkillPreventBust.Size = new Size(137, 40);
+            buttonSkillPreventBust.TabIndex = 8;
+            buttonSkillPreventBust.Text = "Prevent Bust";
+            buttonSkillPreventBust.UseVisualStyleBackColor = false;
+            buttonSkillPreventBust.Click += buttonSkillPreventBust_Click;
+            // 
             // buttonSkillDoubleDamage
-            this.buttonSkillDoubleDamage.Location = new System.Drawing.Point(370, 420);
-            this.buttonSkillDoubleDamage.Name = "buttonSkillDoubleDamage";
-            this.buttonSkillDoubleDamage.Size = new System.Drawing.Size(130, 30);
-            this.buttonSkillDoubleDamage.TabIndex = 9;
-            this.buttonSkillDoubleDamage.Text = "Double Damage";
-            this.buttonSkillDoubleDamage.Enabled = false;
-            this.buttonSkillDoubleDamage.UseVisualStyleBackColor = true;
-            this.buttonSkillDoubleDamage.Click += new System.EventHandler(this.buttonSkillDoubleDamage_Click);
-
+            // 
+            buttonSkillDoubleDamage.BackColor = Color.Transparent;
+            buttonSkillDoubleDamage.BackgroundImage = Properties.Resources.btn;
+            buttonSkillDoubleDamage.BackgroundImageLayout = ImageLayout.Stretch;
+            buttonSkillDoubleDamage.Enabled = false;
+            buttonSkillDoubleDamage.FlatStyle = FlatStyle.Flat;
+            buttonSkillDoubleDamage.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonSkillDoubleDamage.Location = new Point(423, 560);
+            buttonSkillDoubleDamage.Margin = new Padding(3, 4, 3, 4);
+            buttonSkillDoubleDamage.Name = "buttonSkillDoubleDamage";
+            buttonSkillDoubleDamage.Size = new Size(149, 40);
+            buttonSkillDoubleDamage.TabIndex = 9;
+            buttonSkillDoubleDamage.Text = "Double Damage";
+            buttonSkillDoubleDamage.UseVisualStyleBackColor = false;
+            buttonSkillDoubleDamage.Click += buttonSkillDoubleDamage_Click;
+            // 
             // progressBarSkill
-            this.progressBarSkill.Location = new System.Drawing.Point(520, 420);
-            this.progressBarSkill.Maximum = 50;
-            this.progressBarSkill.Name = "progressBarSkill";
-            this.progressBarSkill.Size = new System.Drawing.Size(150, 30);
-            this.progressBarSkill.TabIndex = 10;
-
+            // 
+            progressBarSkill.BackColor = SystemColors.Control;
+            progressBarSkill.Location = new Point(594, 560);
+            progressBarSkill.Margin = new Padding(3, 4, 3, 4);
+            progressBarSkill.Maximum = 50;
+            progressBarSkill.Name = "progressBarSkill";
+            progressBarSkill.Size = new Size(171, 40);
+            progressBarSkill.TabIndex = 10;
+            // 
             // labelRoundStatus
-            this.labelRoundStatus.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelRoundStatus.ForeColor = System.Drawing.Color.DarkRed;
-            this.labelRoundStatus.Location = new System.Drawing.Point(50, 200);
-            this.labelRoundStatus.Name = "labelRoundStatus";
-            this.labelRoundStatus.Size = new System.Drawing.Size(600, 40);
-            this.labelRoundStatus.TabIndex = 11;
-            this.labelRoundStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelRoundStatus.Text = "";
-            this.labelRoundStatus.Visible = false;
-
+            // 
+            labelRoundStatus.BackColor = Color.Transparent;
+            labelRoundStatus.Font = new Font("Algerian", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelRoundStatus.ForeColor = Color.White;
+            labelRoundStatus.Location = new Point(57, 267);
+            labelRoundStatus.Name = "labelRoundStatus";
+            labelRoundStatus.Size = new Size(686, 53);
+            labelRoundStatus.TabIndex = 11;
+            labelRoundStatus.TextAlign = ContentAlignment.MiddleCenter;
+            labelRoundStatus.Visible = false;
+            // 
             // roundTransitionTimer
-            this.roundTransitionTimer.Interval = 1500;
-
+            // 
+            roundTransitionTimer.Interval = 1500;
+            // 
             // Form1
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 480);
-            this.Controls.Add(this.labelRoundStatus);
-            this.Controls.Add(this.progressBarSkill);
-            this.Controls.Add(this.buttonSkillPreventBust);
-            this.Controls.Add(this.buttonSkillDoubleDamage);
-            this.Controls.Add(this.buttonStand);
-            this.Controls.Add(this.buttonHit);
-            this.Controls.Add(this.labelOpponentHP);
-            this.Controls.Add(this.labelPlayerHP);
-            this.Controls.Add(this.labelOpponentScore);
-            this.Controls.Add(this.labelPlayerScore);
-            this.Controls.Add(this.panelOpponentCards);
-            this.Controls.Add(this.panelPlayerCards);
-            this.Name = "Form1";
-            this.Text = "Blackjack Battle";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 640);
+            Controls.Add(labelRoundStatus);
+            Controls.Add(progressBarSkill);
+            Controls.Add(buttonSkillPreventBust);
+            Controls.Add(buttonSkillDoubleDamage);
+            Controls.Add(buttonStand);
+            Controls.Add(buttonHit);
+            Controls.Add(labelOpponentHP);
+            Controls.Add(labelPlayerHP);
+            Controls.Add(labelOpponentScore);
+            Controls.Add(labelPlayerScore);
+            Controls.Add(panelOpponentCards);
+            Controls.Add(panelPlayerCards);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "Form1";
+            Text = "Blackjack Battle";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
