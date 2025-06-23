@@ -6,6 +6,4 @@ namespace FPBlackjack
     {
         int CalculateScore(List<Card> hand);
     }
-
-    
 }

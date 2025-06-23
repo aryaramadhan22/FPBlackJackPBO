@@ -1,32 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FPBlackjack
 {
     public class Deck
     {
         private List<Card> cards;
-        private static readonly string[] Suits = { "Spades", "Hearts", "Diamonds", "Clubs" };
-        private static readonly string[] Ranks = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
+        private Random rng = new Random();
 
         public Deck()
         {
-            cards = new List<Card>();
+            Refill();
+        }
 
-            foreach (string suit in Suits)
+        public void Refill()
+        {
+            cards = new List<Card>();
+            string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
+            string[] ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
+
+            foreach (var suit in suits)
             {
-                foreach (string rank in Ranks)
+                foreach (var rank in ranks)
                 {
                     cards.Add(new Card(suit, rank));
                 }
             }
+
+            Shuffle();
         }
 
         public void Shuffle()
         {
-            Random rng = new Random();
-            cards = cards.OrderBy(c => rng.Next()).ToList();
+            for (int i = cards.Count - 1; i > 0; i--)
+            {
+                int j = rng.Next(i + 1);
+                var temp = cards[i];
+                cards[i] = cards[j];
+                cards[j] = temp;
+            }
         }
 
         public Card DrawCard()
@@ -36,14 +48,10 @@ namespace FPBlackjack
             cards.RemoveAt(0);
             return card;
         }
-        public List<Card> PeekAllCards()
-        {
-            return new List<Card>(cards);
-        }
 
-        public void RemoveCard(Card card)
+        public bool IsEmpty()
         {
-            cards.Remove(card);
+            return cards.Count == 0;
         }
     }
 }
