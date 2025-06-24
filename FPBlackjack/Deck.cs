@@ -19,9 +19,9 @@ namespace FPBlackjack
             string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
             string[] ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
 
-            foreach (var suit in suits)
+            foreach (string suit in suits)
             {
-                foreach (var rank in ranks)
+                foreach (string rank in ranks)
                 {
                     cards.Add(new Card(suit, rank));
                 }
@@ -35,7 +35,7 @@ namespace FPBlackjack
             for (int i = cards.Count - 1; i > 0; i--)
             {
                 int j = rng.Next(i + 1);
-                var temp = cards[i];
+                Card temp = cards[i];
                 cards[i] = cards[j];
                 cards[j] = temp;
             }

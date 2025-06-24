@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Reflection;
 using System.Resources;
-using FPBlackjack.Properties; 
+using FPBlackjack.Properties;
 
 namespace FPBlackjack
 {

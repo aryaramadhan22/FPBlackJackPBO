@@ -8,7 +8,10 @@ namespace FPBlackjack
         public List<Card> Hand { get; set; } = new List<Card>();
     }
 
-    public class HumanPlayer : Player { }
+    public class HumanPlayer : Player
+    {
+
+    }
 
     public class OpponentPlayer : Player
     {

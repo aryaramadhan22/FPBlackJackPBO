@@ -9,7 +9,7 @@ namespace FPBlackjack
             int total = 0;
             int aces = 0;
 
-            foreach (var card in hand)
+            foreach (Card card in hand)
             {
                 if (card == null) continue;
                 total += card.Value;
