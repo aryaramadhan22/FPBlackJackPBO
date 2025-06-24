@@ -21,6 +21,12 @@ namespace FPBlackjack
         {
             InitializeComponent();
 
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; 
+            this.MaximizeBox = false;                           
+            this.MinimizeBox = true;                            
+            this.StartPosition = FormStartPosition.CenterScreen; 
+
+
             this.opponent = opponentPlayer;
             this.BackgroundImage = Properties.Resources.BackgroundGame2;
             this.BackgroundImageLayout = ImageLayout.Stretch;
@@ -173,7 +179,6 @@ namespace FPBlackjack
             {
                 isRevealed = true;
 
-                // Biarkan opponent bermain dulu
                 opponent.PlayTurn(deck, human.GetScore());
 
                 int opponentScore = opponent.GetScore();

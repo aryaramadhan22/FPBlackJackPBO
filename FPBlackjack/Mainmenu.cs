@@ -12,6 +12,12 @@ namespace FPBlackjack
         public MainMenu()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle; 
+            this.MaximizeBox = false;                           
+            this.MinimizeBox = true;                            
+            this.StartPosition = FormStartPosition.CenterScreen; 
+
             this.BackgroundImage = Properties.Resources.BackgroundGame2;
             this.BackgroundImageLayout = ImageLayout.Stretch;
             bgPlayer = new SoundPlayer(Properties.Resources.bg_music);
