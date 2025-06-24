@@ -8,7 +8,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace FPBlackjack
 {
-    public abstract class Player
+    public class Player
     {
         public string Name { get; set; }
         public int HP { get; set; }

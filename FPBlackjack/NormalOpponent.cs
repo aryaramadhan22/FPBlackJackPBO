@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FPBlackjack
 {
-    public class NormalOpponent : Player
+    public class NormalOpponent : Opponent
     {
         private Random rng = new Random();
 
