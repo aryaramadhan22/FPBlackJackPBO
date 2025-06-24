@@ -18,9 +18,16 @@ namespace FPBlackjack
             bgPlayer.PlayLooping();
         }
 
-        private void buttonStart_Click(object sender, EventArgs e)
+        private void buttonNormal_Click(object sender, EventArgs e)
         {
-            Form1 gameForm = new Form1();
+            Form1 gameForm = new Form1(new NormalOpponent());
+            gameForm.Show();
+            this.Hide();
+        }
+
+        private void buttonHard_Click(object sender, EventArgs e)
+        {
+            Form1 gameForm = new Form1(new HardOpponent());
             gameForm.Show();
             this.Hide();
         }

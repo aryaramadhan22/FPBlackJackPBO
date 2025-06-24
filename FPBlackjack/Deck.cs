@@ -35,7 +35,7 @@ namespace FPBlackjack
             for (int i = cards.Count - 1; i > 0; i--)
             {
                 int j = rng.Next(i + 1);
-                Card temp = cards[i];
+                var temp = cards[i];
                 cards[i] = cards[j];
                 cards[j] = temp;
             }

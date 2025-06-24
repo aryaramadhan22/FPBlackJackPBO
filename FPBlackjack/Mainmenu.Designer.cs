@@ -3,7 +3,8 @@
     partial class MainMenu
     {
         private System.ComponentModel.IContainer components = null;
-        private Button buttonStart;
+        private Button buttonNormal;
+        private Button buttonHard;
         private Button buttonExit;
 
         protected override void Dispose(bool disposing)
@@ -15,25 +16,41 @@
 
         private void InitializeComponent()
         {
-            buttonStart = new Button();
+            buttonNormal = new Button();
+            buttonHard = new Button();
             buttonExit = new Button();
             labelTitle = new Label();
             SuspendLayout();
             // 
-            // buttonStart
+            // buttonNormal
             // 
-            buttonStart.BackColor = Color.Transparent;
-            buttonStart.BackgroundImage = Properties.Resources.btn;
-            buttonStart.BackgroundImageLayout = ImageLayout.Stretch;
-            buttonStart.FlatStyle = FlatStyle.Flat;
-            buttonStart.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            buttonStart.Location = new Point(248, 188);
-            buttonStart.Name = "buttonStart";
-            buttonStart.Size = new Size(177, 58);
-            buttonStart.TabIndex = 0;
-            buttonStart.Text = "Start Game";
-            buttonStart.UseVisualStyleBackColor = false;
-            buttonStart.Click += buttonStart_Click;
+            buttonNormal.BackColor = Color.Transparent;
+            buttonNormal.BackgroundImage = Properties.Resources.btn;
+            buttonNormal.BackgroundImageLayout = ImageLayout.Stretch;
+            buttonNormal.FlatStyle = FlatStyle.Flat;
+            buttonNormal.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonNormal.Location = new Point(248, 182);
+            buttonNormal.Name = "buttonNormal";
+            buttonNormal.Size = new Size(177, 58);
+            buttonNormal.TabIndex = 0;
+            buttonNormal.Text = "Normal Mode";
+            buttonNormal.UseVisualStyleBackColor = false;
+            buttonNormal.Click += buttonNormal_Click;
+            // 
+            // buttonHard
+            // 
+            buttonHard.BackColor = Color.Transparent;
+            buttonHard.BackgroundImage = Properties.Resources.btn;
+            buttonHard.BackgroundImageLayout = ImageLayout.Stretch;
+            buttonHard.FlatStyle = FlatStyle.Flat;
+            buttonHard.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonHard.Location = new Point(248, 266);
+            buttonHard.Name = "buttonHard";
+            buttonHard.Size = new Size(177, 58);
+            buttonHard.TabIndex = 1;
+            buttonHard.Text = "Hard Mode";
+            buttonHard.UseVisualStyleBackColor = false;
+            buttonHard.Click += buttonHard_Click;
             // 
             // buttonExit
             // 
@@ -42,7 +59,7 @@
             buttonExit.BackgroundImageLayout = ImageLayout.Stretch;
             buttonExit.FlatStyle = FlatStyle.Flat;
             buttonExit.Font = new Font("Algerian", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            buttonExit.Location = new Point(248, 281);
+            buttonExit.Location = new Point(248, 351);
             buttonExit.Name = "buttonExit";
             buttonExit.Size = new Size(177, 58);
             buttonExit.TabIndex = 1;
@@ -69,7 +86,8 @@
             // 
             AutoValidate = AutoValidate.EnableAllowFocusChange;
             ClientSize = new Size(698, 488);
-            Controls.Add(buttonStart);
+            Controls.Add(buttonNormal);
+            Controls.Add(buttonHard);
             Controls.Add(buttonExit);
             Controls.Add(labelTitle);
             Name = "MainMenu";

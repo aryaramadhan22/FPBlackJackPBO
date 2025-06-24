@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Form1.cs
+using System;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 using WMPLib;
 
@@ -11,23 +10,18 @@ namespace FPBlackjack
     {
         private Deck deck;
         private HumanPlayer human;
-        private OpponentPlayer opponent;
-        private IScoreEvaluator evaluator = new BlackjackScoreEvaluator();
-
-        private WindowsMediaPlayer bgMusicPlayer;
+        private Player opponent;
+        private GameManager gameManager = new GameManager();
+        private SkillManager skillManager = new SkillManager();
         private WindowsMediaPlayer sfxPlayer;
 
-        private int playerHP = 100;
-        private int opponentHP = 100;
-        private int skillGauge = 0;
-        private const int maxGauge = 50;
-        private bool isSkillPreventBustActive = false;
-        private bool isSkillDoubleDamageActive = false;
         private bool isRevealed = false;
 
-        public Form1()
+        public Form1(Player opponentPlayer)
         {
             InitializeComponent();
+
+            this.opponent = opponentPlayer;
             this.BackgroundImage = Properties.Resources.BackgroundGame2;
             this.BackgroundImageLayout = ImageLayout.Stretch;
             roundTransitionTimer.Tick += roundTransitionTimer_Tick;
@@ -37,7 +31,7 @@ namespace FPBlackjack
         private void PlayCardDrawSound()
         {
             sfxPlayer = new WindowsMediaPlayer();
-            sfxPlayer.URL = @"D:\Blackjack assets\card_draw.mp3";
+            sfxPlayer.URL = @"D:\\Blackjack assets\\card_draw.mp3";
             sfxPlayer.settings.volume = 80;
             sfxPlayer.controls.play();
         }
@@ -48,17 +42,13 @@ namespace FPBlackjack
             deck.Shuffle();
 
             human = new HumanPlayer { Name = "Player" };
-            opponent = new OpponentPlayer { Name = "Opponent" };
+            opponent.Name = "Opponent";
 
-            playerHP = 100;
-            opponentHP = 100;
-            skillGauge = 0;
-            isSkillPreventBustActive = false;
-            isSkillDoubleDamageActive = false;
+            skillManager.ResetSkills();
             isRevealed = false;
 
-            human.Hand.Clear();
-            opponent.Hand.Clear();
+            human.ResetHand();
+            opponent.ResetHand();
 
             human.Hand.Add(deck.DrawCard());
             opponent.Hand.Add(deck.DrawCard());
@@ -71,9 +61,9 @@ namespace FPBlackjack
 
         private void UpdateUI()
         {
-            labelPlayerHP.Text = $"Player HP: {playerHP}";
-            labelOpponentHP.Text = $"Opponent HP: {opponentHP}";
-            progressBarSkill.Value = skillGauge;
+            labelPlayerHP.Text = $"Player HP: {human.HP}";
+            labelOpponentHP.Text = $"Opponent HP: {opponent.HP}";
+            progressBarSkill.Value = skillManager.SkillGauge;
 
             panelPlayerCards.Controls.Clear();
             int x = 0;
@@ -104,16 +94,16 @@ namespace FPBlackjack
                 }
             }
 
-            labelPlayerScore.Text = $"Player Score: {evaluator.CalculateScore(human.Hand)}";
+            labelPlayerScore.Text = $"Player Score: {human.GetScore()}";
 
             if (!isRevealed && opponent.Hand.Count > 0)
                 labelOpponentScore.Text = $"Opponent Score: {opponent.Hand[0].Value} + ?";
             else
-                labelOpponentScore.Text = $"Opponent Score: {evaluator.CalculateScore(opponent.Hand)}";
+                labelOpponentScore.Text = $"Opponent Score: {opponent.GetScore()}";
 
-            bool canActivateSkill = skillGauge >= maxGauge && !isSkillPreventBustActive && !isSkillDoubleDamageActive;
-            buttonSkillPreventBust.Enabled = canActivateSkill;
-            buttonSkillDoubleDamage.Enabled = canActivateSkill;
+            bool canActivate = skillManager.CanActivateSkill();
+            buttonSkillPreventBust.Enabled = canActivate;
+            buttonSkillDoubleDamage.Enabled = canActivate;
         }
 
         private PictureBox CreateCardImage(Card card)
@@ -142,34 +132,27 @@ namespace FPBlackjack
 
         private void buttonHit_Click(object sender, EventArgs e)
         {
-            labelRoundStatus.Visible = false;
             PlayCardDrawSound();
 
             if (deck.IsEmpty()) deck.Refill();
 
-            int currentScore = evaluator.CalculateScore(human.Hand);
+            int currentScore = human.GetScore();
             Card drawnCard = null;
 
-            if (isSkillPreventBustActive)
+            if (skillManager.PreventBustActive)
             {
                 int maxValue = 21 - currentScore;
                 int attempts = 0;
-
                 do
                 {
-                    if (deck.IsEmpty()) deck.Refill();
                     drawnCard = deck.DrawCard();
                     attempts++;
-
                     if (drawnCard == null) break;
-
-                    bool isAce = drawnCard.Name.Contains("Ace");
-                    if (drawnCard.Value <= maxValue || isAce)
+                    if (drawnCard.Value <= maxValue || drawnCard.Name.Contains("Ace"))
                         break;
-
                 } while (attempts < 30);
 
-                isSkillPreventBustActive = false;
+                skillManager.ResetSkills();
                 labelRoundStatus.Text = "Skill Prevent Bust aktif!";
                 labelRoundStatus.ForeColor = Color.Aqua;
                 labelRoundStatus.Visible = true;
@@ -182,99 +165,76 @@ namespace FPBlackjack
             if (drawnCard == null) return;
 
             human.Hand.Add(drawnCard);
-            skillGauge += drawnCard.Value;
-            if (skillGauge > maxGauge) skillGauge = maxGauge;
+            skillManager.AddGauge(drawnCard.Value);
 
             UpdateUI();
 
-            int playerScore = evaluator.CalculateScore(human.Hand);
-            if (playerScore > 21)
+            if (human.GetScore() > 21)
             {
-                int opponentScore = evaluator.CalculateScore(opponent.Hand);
-                playerHP -= opponentScore;
+                isRevealed = true;
+
+                // Biarkan opponent bermain dulu
+                opponent.PlayTurn(deck, human.GetScore());
+
+                int opponentScore = opponent.GetScore();
+                human.HP -= opponentScore;
+
                 labelRoundStatus.Text = "Kamu bust! Opponent menang ronde ini.";
                 labelRoundStatus.ForeColor = Color.White;
                 labelRoundStatus.Visible = true;
 
-                DisableAllButtons();
-                isRevealed = true;
                 UpdateUI();
+                DisableAllButtons();
                 roundTransitionTimer.Start();
             }
         }
 
         private void buttonStand_Click(object sender, EventArgs e)
         {
-            int playerScore = evaluator.CalculateScore(human.Hand);
-
-            opponent.PlayTurn(deck, playerScore);
+            opponent.PlayTurn(deck, human.GetScore());
             isRevealed = true;
-            UpdateUI();
 
-            int opponentScore = evaluator.CalculateScore(opponent.Hand);
-            string result;
+            string result = gameManager.EvaluateRound(human, opponent, skillManager.DoubleDamageActive, out int damage);
+            skillManager.ResetSkills();
 
-            if (playerScore > opponentScore && playerScore <= 21 || opponentScore > 21)
+            if (result == "PlayerWin")
             {
-                int damage = playerScore;
-                if (isSkillDoubleDamageActive)
-                {
-                    damage *= 2;
-                    isSkillDoubleDamageActive = false;
-                }
-                opponentHP -= damage;
-                result = $"You win the round! Opponent kehilangan {damage} HP!";
+                labelRoundStatus.Text = $"You win the round! Opponent kehilangan {damage} HP!";
             }
-            else if (opponentScore > playerScore && opponentScore <= 21 || playerScore > 21)
+            else if (result == "OpponentWin")
             {
-                playerHP -= opponentScore;
-                result = $"Opponent win the round! Kamu kehilangan {opponentScore} HP!";
+                labelRoundStatus.Text = $"Opponent win the round! Kamu kehilangan {damage} HP!";
             }
             else
             {
-                result = "Draw! Tidak ada damage.";
+                labelRoundStatus.Text = "Draw! Tidak ada damage.";
             }
 
-            labelRoundStatus.Text = result;
             labelRoundStatus.ForeColor = Color.White;
             labelRoundStatus.Visible = true;
-
+            UpdateUI();
             roundTransitionTimer.Start();
         }
 
         private void buttonSkillPreventBust_Click(object sender, EventArgs e)
         {
-            if (skillGauge >= maxGauge && !isSkillDoubleDamageActive)
-            {
-                isSkillPreventBustActive = true;
-                skillGauge = 0;
-                UpdateUI();
-                labelRoundStatus.Text = "Skill Prevent Bust aktif!";
-                labelRoundStatus.ForeColor = Color.Aqua;
-                labelRoundStatus.Visible = true;
-            }
+            skillManager.ActivatePreventBust();
+            UpdateUI();
         }
 
         private void buttonSkillDoubleDamage_Click(object sender, EventArgs e)
         {
-            if (skillGauge >= maxGauge && !isSkillPreventBustActive)
-            {
-                isSkillDoubleDamageActive = true;
-                skillGauge = 0;
-                UpdateUI();
-                labelRoundStatus.Text = "Skill Double Damage aktif!";
-                labelRoundStatus.ForeColor = Color.Gold;
-                labelRoundStatus.Visible = true;
-            }
+            skillManager.ActivateDoubleDamage();
+            UpdateUI();
         }
 
         private void roundTransitionTimer_Tick(object sender, EventArgs e)
         {
             roundTransitionTimer.Stop();
 
-            if (playerHP <= 0)
+            if (gameManager.IsGameOver(human, opponent, out string message))
             {
-                labelRoundStatus.Text = "You Lose! HP kamu habis.";
+                labelRoundStatus.Text = message;
                 labelRoundStatus.ForeColor = Color.Red;
                 labelRoundStatus.Visible = true;
                 DisableAllButtons();
@@ -282,17 +242,6 @@ namespace FPBlackjack
                 return;
             }
 
-            if (opponentHP <= 0)
-            {
-                labelRoundStatus.Text = "You Win! Opponent KO.";
-                labelRoundStatus.ForeColor = Color.Lime;
-                labelRoundStatus.Visible = true;
-                DisableAllButtons();
-                ReturnToMainMenuWithDelay();
-                return;
-            }
-
-            labelRoundStatus.Visible = false;
             NextRound();
         }
 
@@ -306,19 +255,18 @@ namespace FPBlackjack
 
         private void NextRound()
         {
-            human.Hand.Clear();
-            opponent.Hand.Clear();
+            labelRoundStatus.Visible = false;
+            human.ResetHand();
+            opponent.ResetHand();
             if (deck.IsEmpty()) deck.Refill();
 
-            isSkillPreventBustActive = false;
-            isSkillDoubleDamageActive = false;
+            skillManager.ResetSkills();
             isRevealed = false;
 
             human.Hand.Add(deck.DrawCard());
             opponent.Hand.Add(deck.DrawCard());
 
             UpdateUI();
-
             buttonHit.Enabled = true;
             buttonStand.Enabled = true;
         }
@@ -330,13 +278,7 @@ namespace FPBlackjack
             buttonSkillPreventBust.Enabled = false;
             buttonSkillDoubleDamage.Enabled = false;
         }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-        private void labelRoundStatus_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void Form1_Load(object sender, EventArgs e) { }
+        private void labelRoundStatus_Click(object sender, EventArgs e) { }
     }
 }
