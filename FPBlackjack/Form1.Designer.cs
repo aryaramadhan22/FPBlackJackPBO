@@ -74,7 +74,6 @@ namespace FPBlackjack
             labelPlayerScore.Size = new Size(117, 16);
             labelPlayerScore.TabIndex = 2;
             labelPlayerScore.Text = "Player Score:";
-      
             // 
             // labelOpponentScore
             // 
@@ -190,14 +189,15 @@ namespace FPBlackjack
             // labelRoundStatus
             // 
             labelRoundStatus.BackColor = Color.Transparent;
-            labelRoundStatus.Font = new Font("Algerian", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            labelRoundStatus.Font = new Font("Baskerville Old Face", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             labelRoundStatus.ForeColor = Color.White;
-            labelRoundStatus.Location = new Point(57, 267);
+            labelRoundStatus.Location = new Point(25, 249);
             labelRoundStatus.Name = "labelRoundStatus";
-            labelRoundStatus.Size = new Size(686, 53);
+            labelRoundStatus.Size = new Size(750, 80);
             labelRoundStatus.TabIndex = 11;
             labelRoundStatus.TextAlign = ContentAlignment.MiddleCenter;
             labelRoundStatus.Visible = false;
+            labelRoundStatus.Click += labelRoundStatus_Click;
             // 
             // roundTransitionTimer
             // 
@@ -222,7 +222,9 @@ namespace FPBlackjack
             Controls.Add(panelPlayerCards);
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Blackjack Battle";
+            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
