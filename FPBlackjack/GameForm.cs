@@ -1,5 +1,4 @@
-﻿// Form1.cs
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 using WMPLib;
