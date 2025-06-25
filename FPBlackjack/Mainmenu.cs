@@ -26,14 +26,14 @@ namespace FPBlackjack
 
         private void buttonNormal_Click(object sender, EventArgs e)
         {
-            Form1 gameForm = new Form1(new NormalOpponent());
+            GameForm gameForm = new GameForm(new NormalOpponent());
             gameForm.Show();
             this.Hide();
         }
 
         private void buttonHard_Click(object sender, EventArgs e)
         {
-            Form1 gameForm = new Form1(new HardOpponent());
+            GameForm gameForm = new GameForm(new HardOpponent());
             gameForm.Show();
             this.Hide();
         }

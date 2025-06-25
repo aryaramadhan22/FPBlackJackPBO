@@ -8,7 +8,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace FPBlackjack
 {
-    public class Player
+    public abstract class Player
     {
         public string Name { get; set; }
         public int HP { get; set; }
@@ -35,7 +35,10 @@ namespace FPBlackjack
             return total;
         }
 
-        public void ResetHand() => Hand.Clear();
+        public void ResetHand()
+        {
+            Hand.Clear();
+        }
 
         public virtual void PlayTurn(Deck deck, int playerScore)
         {

@@ -6,7 +6,7 @@ using WMPLib;
 
 namespace FPBlackjack
 {
-    public partial class Form1 : Form
+    public partial class GameForm : Form
     {
         private Deck deck;
         private HumanPlayer human;
@@ -17,7 +17,7 @@ namespace FPBlackjack
 
         private bool isRevealed = false;
 
-        public Form1(Player opponentPlayer)
+        public GameForm(Player opponentPlayer)
         {
             InitializeComponent();
 
